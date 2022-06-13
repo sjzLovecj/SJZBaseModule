@@ -42,7 +42,7 @@ public class SJZCircularView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func layoutSubviews() {
+    public override func layoutSubviews() {
         super.layoutSubviews()
         
         setCircular(corner: circulayType, radii: CGSize(width: cornerRadius, height: cornerRadius))
