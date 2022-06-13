@@ -21,7 +21,7 @@ public class SJZCircularView: UIView {
         return layer as? CAShapeLayer
     }
     
-    init(cornerRadius: CGFloat, circularType: UIRectCorner, fillColor: UIColor = .white, shadowColor: UIColor? = nil, shadowOffSet: CGSize? = nil, opacity: Float? = nil, radius: Float? = nil) {
+    public init(cornerRadius: CGFloat, circularType: UIRectCorner, fillColor: UIColor = .white, shadowColor: UIColor? = nil, shadowOffSet: CGSize? = nil, opacity: Float? = nil, radius: Float? = nil) {
         super.init(frame: .zero)
         
         self.cornerRadius = cornerRadius
