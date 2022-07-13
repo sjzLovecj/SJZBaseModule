@@ -78,7 +78,7 @@ public var currentWindow: UIWindow? {
     return windowScene?.windows.last
 }
 
-func currentController() -> UIViewController? {
+public func currentController() -> UIViewController? {
     if let keyWindow = keyWindow {
         if let rootVC = keyWindow.rootViewController, let nextResponder = rootVC.view.next {
             if let vc = nextResponder as? UIViewController {
@@ -93,7 +93,7 @@ func currentController() -> UIViewController? {
 }
 
 @discardableResult
-func topViewController(controller: UIViewController?) -> UIViewController? {
+public func topViewController(controller: UIViewController?) -> UIViewController? {
     if let tabVC = controller as? UITabBarController {
         return topViewController(controller: tabVC.selectedViewController)
     }else if let navVC = controller as? UINavigationController {
