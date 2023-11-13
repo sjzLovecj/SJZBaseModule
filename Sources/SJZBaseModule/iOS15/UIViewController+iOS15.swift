@@ -14,44 +14,71 @@ import UIKit
 public extension UIViewController {
     
     @objc class func initializeChangeMethod() {
-        let originalSelector = #selector(UIViewController.viewWillAppear(_:))
-        let swizzledSelector = #selector(UIViewController.ikm_viewWillAppear(_:))
+        let originalSelector = #selector(UIViewController.viewDidLoad)
+        let swizzledSelector = #selector(UIViewController.ikm_viewWillAppear)
         SJZExchangeMethod.exchangeMethod(classType: self, originalSelector: originalSelector, swizzledSelector: swizzledSelector)
     }
     
-    static var scrollEdge = "scrollEdgeAppearance"
-    @objc var scrollEdge: Bool {
-        get {
-            // 结束页面时间
-            guard let scrollEdge = objc_getAssociatedObject(self, &UIViewController.scrollEdge) as? Bool else {
-                return false
-            }
-            
-            return scrollEdge
-        }
-        set {
-            // 保存页面时间
-            objc_setAssociatedObject(self, &UIViewController.scrollEdge, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+//    static var clearNavBar = "scrollEdgeAppearance"
+//    @objc var clearNavBar: Bool {
+//        get {
+//            // 结束页面时间
+//            guard let scrollEdge = objc_getAssociatedObject(self, &UIViewController.clearNavBar) as? Bool else {
+//                return false
+//            }
+//
+//            return scrollEdge
+//        }
+//        set {
+//            // 保存页面时间
+//            objc_setAssociatedObject(self, &UIViewController.clearNavBar, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+//        }
+//    }
+    
+    @objc func ikm_viewWillAppear() {
+        self.ikm_viewWillAppear()
+        
+        // 适配iOS15
+        if #available(iOS 15.0, *) {
+            //UINavigationBarAppearance属性从iOS13开始
+            let navBarAppearance = UINavigationBarAppearance()
+            // 背景色
+            navBarAppearance.backgroundColor = .white
+            navBarAppearance.backgroundImage = nil
+            // 去掉半透明效果
+            navBarAppearance.backgroundEffect = nil
+            // 去除导航栏阴影（如果不设置clear，导航栏底下会有一条阴影线）
+            navBarAppearance.shadowColor = UIColor.clear
+            navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
+            navigationController?.navigationBar.standardAppearance = navBarAppearance
         }
     }
     
-    @objc func ikm_viewWillAppear(_ animated: Bool) {
-        self.ikm_viewWillAppear(animated)
-        
-        // 保存初始化时间
-        if !scrollEdge {
-            if #available(iOS 15.0, *) {
-                //UINavigationBarAppearance属性从iOS13开始
-                let navBarAppearance = UINavigationBarAppearance()
-                // 背景色
-                navBarAppearance.backgroundColor = .white
-                // 去掉半透明效果
-                navBarAppearance.backgroundEffect = nil
-                // 去除导航栏阴影（如果不设置clear，导航栏底下会有一条阴影线）
-                navBarAppearance.shadowColor = UIColor.clear
-                navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
-                navigationController?.navigationBar.standardAppearance = navBarAppearance
-            }
+    public func clearNavBarColor(_ clear: Bool) {
+        if clear {
+            //UINavigationBarAppearance属性从iOS13开始
+            let navBarAppearance = UINavigationBarAppearance()
+            // 背景色
+            navBarAppearance.backgroundColor = .clear
+            navBarAppearance.backgroundImage = nil
+            // 去掉半透明效果
+            navBarAppearance.backgroundEffect = nil
+            // 去除导航栏阴影（如果不设置clear，导航栏底下会有一条阴影线）
+            navBarAppearance.shadowColor = UIColor.clear
+            navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
+            navigationController?.navigationBar.standardAppearance = navBarAppearance
+        }else {
+            //UINavigationBarAppearance属性从iOS13开始
+            let navBarAppearance = UINavigationBarAppearance()
+            // 背景色
+            navBarAppearance.backgroundColor = .white
+            navBarAppearance.backgroundImage = nil
+            // 去掉半透明效果
+            navBarAppearance.backgroundEffect = nil
+            // 去除导航栏阴影（如果不设置clear，导航栏底下会有一条阴影线）
+            navBarAppearance.shadowColor = UIColor.clear
+            navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
+            navigationController?.navigationBar.standardAppearance = navBarAppearance
         }
     }
 }
